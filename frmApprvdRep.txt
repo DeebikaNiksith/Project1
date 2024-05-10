@@ -33,19 +33,6 @@
             font-family: Arial, Helvetica, sans-serif;
             font-size: x-small;
         }
-
-        tr:nth-child(even) {
-            background: #fff;
-        }
-
-        tr:nth-child(odd) {
-            background: #D6EAF8;
-        }
-
-        .yourclass {
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: x-small;
-        }
     </style>  
     <script language="javascript" type="text/javascript">
         function MakeStaticHeader(gridId, height, width, headerHeight, isFooter) {
@@ -118,6 +105,12 @@
                     </div>
                 </section>
             </div>  
+
+
+
+
+
+
             <div style="overflow: hidden;" id="DivHeaderRow">
             </div>   
             <div onscroll="OnScrollDiv(this)" id="DivMainContent" class="pre-scrollable">
@@ -216,6 +209,12 @@
                             OnClick="btnReset_Click" />
                     </td>
                 </tr>
+
+
+
+
+
+
             </table>
         </ContentTemplate>
     </asp:UpdatePanel>
