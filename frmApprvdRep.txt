@@ -1,0 +1,223 @@
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeFile="frmApprvdRep.aspx.cs" Inherits="Default2" %>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="Server">
+    <style type="text/css">
+        span {
+            font-weight: 500;
+            font-size: small;
+            color: black;
+        }
+
+        .auto-style1 {
+            position: relative;
+            width: 100%;
+            -ms-flex: 0 0 50%;
+            flex: 0 0 50%;
+            max-width: 50%;
+            left: -7px;
+            top: -115px;
+            padding-left: 7.5px;
+            padding-right: 7.5px;
+        }
+
+        .table-condensed1 tr th {
+            border: 0px solid #AED6F1;
+            color: black;
+            background-color: #AED6F1;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: x-small;
+        }
+
+        .table-condensed1, .table-condensed1 tr td {
+            border: 0px solid #AED6F1;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: x-small;
+        }
+
+        tr:nth-child(even) {
+            background: #fff;
+        }
+
+        tr:nth-child(odd) {
+            background: #D6EAF8;
+        }
+
+        .yourclass {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: x-small;
+        }
+    </style>  
+    <script language="javascript" type="text/javascript">
+        function MakeStaticHeader(gridId, height, width, headerHeight, isFooter) {
+            var tbl = document.getElementById(gridId);
+            if (tbl) {
+                var DivHR = document.getElementById('DivHeaderRow');
+                var DivMC = document.getElementById('DivMainContent');
+                var DivFR = document.getElementById('DivFooterRow');
+
+                //*** Set divheaderRow Properties ****
+                DivHR.style.height = headerHeight + 'px';
+                DivHR.style.width = (parseInt(width) - 16) + 'px';
+                DivHR.style.position = 'relative';
+                DivHR.style.top = '0px';
+                DivHR.style.zIndex = '10';
+                DivHR.style.verticalAlign = 'top';
+
+                //*** Set divMainContent Properties ****
+                DivMC.style.width = width + 'px';
+                DivMC.style.height = height + 'px';
+                DivMC.style.position = 'relative';
+                DivMC.style.top = -headerHeight + 'px';
+                DivMC.style.zIndex = '1';
+
+                //*** Set divFooterRow Properties ****
+                DivFR.style.width = (parseInt(width) - 16) + 'px';
+                DivFR.style.position = 'relative';
+                DivFR.style.top = -headerHeight + 'px';
+                DivFR.style.verticalAlign = 'top';
+                DivFR.style.paddingtop = '2px';
+
+                if (isFooter) {
+                    var tblfr = tbl.cloneNode(true);
+                    tblfr.removeChild(tblfr.getElementsByTagName('tbody')[0]);
+                    var tblBody = document.createElement('tbody');
+                    tblfr.style.width = '100%';
+                    tblfr.cellSpacing = "0";
+                    tblfr.border = "0px";
+                    tblfr.rules = "none";
+                    //*****In the case of Footer Row *******
+                    tblBody.appendChild(tbl.rows[tbl.rows.length - 1]);
+                    tblfr.appendChild(tblBody);
+                    DivFR.appendChild(tblfr);
+                }
+                //****Copy Header in divHeaderRow****
+                DivHR.appendChild(tbl.cloneNode(true));
+            }
+        }
+        function OnScrollDiv(Scrollablediv) {
+            document.getElementById('DivHeaderRow').scrollLeft = Scrollablediv.scrollLeft;
+        }
+
+    </script>
+    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+        <ContentTemplate>
+            <div class="container-fluid">
+                <section class="content-header">
+                    <div class="container-fluid">
+                        <div class="row mb-1">
+                            <div class="col-sm-6">
+                                <h6 class="m-0">Over Time Created By You</h6>
+                            </div>
+                            <div class="col-sm-6">
+                                <ol class="breadcrumb float-sm-right">
+                                    <li class="breadcrumb-item"><a href="frmHome.aspx">Home</a></li>
+                                    <li class="breadcrumb-item active">Operators OT Created By You</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>  
+            <div style="overflow: hidden;" id="DivHeaderRow">
+            </div>   
+            <div onscroll="OnScrollDiv(this)" id="DivMainContent" class="pre-scrollable">
+                <asp:GridView ID="GrdOprtrs" runat="server" OnRowCommand="GrdOprtrs_RowCommand" OnRowDataBound="GrdOprtrs_RowDataBound" AutoGenerateColumns="false" CellPadding="10" CellSpacing="5" CssClass="table-condensed1 table-hover" EmptyDataText="No data available." Width="99%">
+                    <Columns>
+                        <asp:TemplateField HeaderText="S.No">
+                            <ItemStyle Width="2%" />
+                            <ItemTemplate>
+                                <asp:Label ID="lblreqno" runat="server" Text='<%# Container.DataItemIndex + 1 %>'></asp:Label>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField HeaderText="Emp. Name">
+                            <ItemStyle Width="11%" />
+                            <ItemTemplate>
+                                <asp:Label ID="lblbename" runat="server" Text='<%# Eval("EMP_NAME") %>' CssClass="yourclass"></asp:Label>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField HeaderText="Code">
+                            <ItemStyle Width="7%" />
+                            <ItemTemplate>
+                                <asp:Label ID="lblempcode" runat="server" Text='<%# Eval("EMP_CODE") %>' CssClass="yourclass"></asp:Label>
+                                <asp:TextBox ID="txtempcode" runat="server" Visible="false" Text='<%# Eval("EMP_CODE") %>'></asp:TextBox>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField HeaderText="Module">
+                            <ItemStyle Width="8%" />
+                            <ItemTemplate>
+                                <asp:Label ID="lblmdule" runat="server" Text='<%# Eval("SEC_CODE") %>'></asp:Label>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField HeaderText="Date">
+                            <ItemStyle Width="7%" />
+                            <ItemTemplate>
+                                <asp:Label runat="server" ID="lbldate" Text='<%# Eval("WORK_DATE") %>' CssClass="yourclass"></asp:Label>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField HeaderText="Shift">
+                            <ItemStyle Width="5%" />
+                            <ItemTemplate>
+                                <asp:Label runat="server" ID="lblsft" Text='<%# Eval("SHIFT") %>' CssClass="yourclass"></asp:Label>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField HeaderText="From Time">
+                            <ItemStyle Width="7%" />
+                            <ItemTemplate>
+                                <asp:Label runat="server" ID="lblfrmtme" Text='<%# Eval("FROM_TIME") %>' CssClass="yourclass"></asp:Label>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField HeaderText="To Time">
+                            <ItemStyle Width="7%" />
+                            <ItemTemplate>
+                                <asp:Label runat="server" ID="lbltotme" Text='<%# Eval("TO_TIME") %>' CssClass="yourclass"></asp:Label>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField HeaderText="OT Hours">
+                            <ItemStyle Width="7%" />
+                            <ItemTemplate>
+                                <asp:Label runat="server" ID="txttotothrs" Text='<%# Eval("OTMINS") %>' CssClass="yourclass"></asp:Label>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField HeaderText="OT Ext.Hrs">
+                            <ItemStyle Width="7%" />
+                            <ItemTemplate>
+                                <asp:Label runat="server" ID="lblotexhrs" Text='<%# Eval("EXTENSION") %>' CssClass="yourclass"></asp:Label>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField HeaderText="Reason">
+                            <ItemStyle Width="15%" />
+                            <ItemTemplate>
+                                <asp:Label runat="server" ID="lblrsn" Text='<%# Eval("REASON") %>' CssClass="yourclass"></asp:Label>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField HeaderText="Status">
+                            <ItemStyle Width="7%" />
+                            <ItemTemplate>
+                                <asp:Label runat="server" ID="lblappsts" Text='<%# Eval("APP_STATUS") %>' CssClass="yourclass"></asp:Label>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField HeaderText="Request By">
+                            <ItemStyle Width="10%" />
+                            <ItemTemplate>
+                                <asp:Label runat="server" ID="lblreqby" Text='<%# Eval("REQ_BY") %>' CssClass="yourclass"></asp:Label>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                    </Columns>
+                </asp:GridView>
+            </div>
+            <br />
+            <div id="DivFooterRow" style="overflow: hidden">
+            </div>
+            <table class="w-100 table table-sm  table-borderless">
+                <tr style="background-color: white;">
+                    <td align="center">
+                        
+                        <asp:Button ID="Button4" CssClass="btn btn-primary" runat="server" Text="Back" ToolTip="Reset the Page"
+                            OnClick="btnReset_Click" />
+                    </td>
+                </tr>
+            </table>
+        </ContentTemplate>
+    </asp:UpdatePanel>
+</asp:Content>
+
